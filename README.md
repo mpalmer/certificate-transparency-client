@@ -14,7 +14,7 @@ There's also the wonders of [the Gemfile](http://bundler.io):
 
 If you're the sturdy type that likes to run from git:
 
-    rake build; gem install pkg/rlimit-<whatever>.gem
+    rake build; gem install pkg/gemplate-<whatever>.gem
 
 Or, if you've eschewed the convenience of Rubygems entirely, then you
 presumably know what to do already.
