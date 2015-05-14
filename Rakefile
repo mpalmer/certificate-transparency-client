@@ -26,11 +26,7 @@ end
 
 desc "Run guard"
 task :guard do
-	require 'guard'
-	::Guard.start(:clear => true)
-	while ::Guard.running do
-		sleep 0.5
-	end
+	sh "guard --clear"
 end
 
 require 'rspec/core/rake_task'
