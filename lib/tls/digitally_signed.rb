@@ -50,7 +50,7 @@ class TLS::DigitallySigned
 		if len != signature.length
 			raise ArgumentError,
 			      "Unexpected signature length " +
-				   "(expected #{len}, actually got #{signature.length}"
+			      "(expected #{len}, actually got #{signature.length}"
 		end
 
 		TLS::DigitallySigned.new.tap do |ds|
