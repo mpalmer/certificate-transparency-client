@@ -12,5 +12,5 @@ guard 'rspec',
       :all_after_pass => true do
 	watch(%r{^spec/.+_spec\.rb$})
 	watch(%r{^spec/.+_methods\.rb$})
-	watch(%r{^lib/})
+	watch(%r{^lib/}) { "spec" }
 end

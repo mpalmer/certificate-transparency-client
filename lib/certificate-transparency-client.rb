@@ -1,0 +1,1 @@
+require 'certificate-transparency/client'

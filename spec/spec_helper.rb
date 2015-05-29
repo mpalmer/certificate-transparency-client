@@ -6,12 +6,6 @@ Spork.prefork do
 	require 'rspec/core'
 	require 'rspec/mocks'
 
-	if RUBY_VERSION =~ /^1\./
-		require 'pry-debugger'
-	else
-		require 'pry-byebug'
-	end
-
 	RSpec.configure do |config|
 		config.fail_fast = true
 #		config.full_backtrace = true
@@ -23,6 +17,8 @@ Spork.prefork do
 end
 
 Spork.each_run do
+	require 'certificate-transparency-client'
+
 	require_relative 'example_methods'
 	require_relative 'example_group_methods'
 
