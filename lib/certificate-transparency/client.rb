@@ -1,7 +1,5 @@
 require 'openssl'
 
-module CertificateTransparency; end
-
 class CertificateTransparency::Client
 	def initialize(url, opts = {})
 		unless opts.is_a? Hash
