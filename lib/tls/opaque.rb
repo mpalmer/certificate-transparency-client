@@ -84,6 +84,8 @@ class TLS::Opaque
 		@value  = str
 	end
 
+	# Return an encoded Opaque.
+	#
 	def to_blob
 		len = value.length
 		params = []

@@ -1,5 +1,7 @@
 require 'openssl'
 
+# Interact with a Certificate Transparency server.
+#
 class CertificateTransparency::Client
 	def initialize(url, opts = {})
 		unless opts.is_a? Hash
@@ -22,8 +24,4 @@ class CertificateTransparency::Client
 
 		@url = URI(url)
 	end
-end
-
-unless Kernel.const_defined?(:CT)
-	CT = CertificateTransparency
 end

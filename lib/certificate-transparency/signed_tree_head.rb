@@ -1,12 +1,17 @@
 require 'json'
 require 'tls'
 
+# A CT SignedTreeHead (RFC6962 s3.5, s4.3).
+#
 class CertificateTransparency::SignedTreeHead
 	attr_accessor :tree_size
 	attr_accessor :timestamp
 	attr_accessor :root_hash
 	attr_accessor :signature
 
+	# Create a new SignedTreeHead instance from the JSON returned
+	# by `/ct/v1/get-sth`.
+	#
 	def self.from_json(json)
 		doc = JSON.parse(json)
 
@@ -18,6 +23,14 @@ class CertificateTransparency::SignedTreeHead
 		end
 	end
 
+	# Determine whether or not the signature that was provided in the
+	# signed tree head is a valid one, based on the provided key.
+	#
+	# @param pk [String] the raw binary form of the public key of the
+	#   log.
+	#
+	# @return Boolean
+	#
 	def valid?(pk)
 		key = OpenSSL::PKey::EC.new(pk)
 

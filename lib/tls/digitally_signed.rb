@@ -35,7 +35,7 @@ class TLS::DigitallySigned
 	# meet the rather stringent requirements.
 	#
 	def self.from_blob(blob)
-		hash_algorithm, signature_algorithm, len, signature = blob.unpack("CCna*")
+		hash_algorithm, signature_algorithm, sig_blob = blob.unpack("CCa*")
 
 		if signature_algorithm != ::TLS::SignatureAlgorithm[:ecdsa]
 			raise ArgumentError,
@@ -47,11 +47,8 @@ class TLS::DigitallySigned
 			      "Hash algorithm specified in blob is not SHA256"
 		end
 
-		if len != signature.length
-			raise ArgumentError,
-			      "Unexpected signature length " +
-			      "(expected #{len}, actually got #{signature.length}"
-		end
+		sig, rest = ::TLS::Opaque.from_blob(sig_blob, 2**16-1)
+		signature = sig.value
 
 		TLS::DigitallySigned.new.tap do |ds|
 			ds.hash_algorithm = hash_algorithm
@@ -63,6 +60,19 @@ class TLS::DigitallySigned
 	attr_accessor :content, :hash_algorithm, :signature_algorithm, :signature
 	attr_reader :key
 
+	# Set the key for this instance.
+	#
+	# @param k [OpenSSL::PKey::EC] a key to verify or generate the signature. 
+	#   If you only want to verify an existing signature (ie you created this
+	#   instance via {.from_blob}, then this key can be a public key. 
+	#   Otherwise, if you want to generate a new signature, you must pass in
+	#   a private key.
+	#
+	# @return void
+	#
+	# @raise [ArgumentError] if you pass in a key that isn't of the
+	#   appropriate type.
+	#
 	def key=(k)
 		unless k.is_a? OpenSSL::PKey::EC
 			raise ArgumentError,
