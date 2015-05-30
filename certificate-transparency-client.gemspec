@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
 
 	s.required_ruby_version = ">= 1.9.3"
 
+	s.add_runtime_dependency 'certificate-transparency', '~> 0.0'
+
 	s.add_development_dependency 'bundler'
 	s.add_development_dependency 'github-release'
 	s.add_development_dependency 'guard-spork'

@@ -1,3 +1,4 @@
+require 'certificate-transparency'
 require 'openssl'
 
 # Interact with a Certificate Transparency server.
