@@ -105,7 +105,7 @@ class CertificateTransparency::Client
 	# @raise [CT:Client::HTTPError] if anything goes spectacularly wrong.
 	#
 	def make_request(op, params = nil)
-		resp = Net::HTTP.get_response(url(op, params))
+		resp = proxy.get_response(url(op, params))
 
 		if resp.code != "200"
 			raise CT::Client::HTTPError,
@@ -130,6 +130,14 @@ class CertificateTransparency::Client
 			if params
 				url.query = params.map { |k,v| "#{k}=#{v}" }.join("&")
 			end
+		end
+	end
+
+	def proxy
+		@proxy ||= begin
+			url = URI(ENV["http_proxy"].to_s)
+
+			Net::HTTP.Proxy(url.host, url.port)
 		end
 	end
 end
