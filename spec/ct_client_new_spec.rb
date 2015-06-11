@@ -14,14 +14,14 @@ describe "CT::Client.new" do
 	it "takes a raw public key" do
 		expect do
 			CT::Client.new "https://ct.example.com",
-			               :public_key => fixture_file("pk_raw")
+			               :public_key => read_fixture_file("pk_raw")
 		end.to_not raise_error
 	end
 
 	it "takes a base64 public key" do
 		expect do
 			CT::Client.new "https://ct.example.com",
-			               :public_key => fixture_file("pk_base64")
+			               :public_key => read_fixture_file("pk_base64")
 		end.to_not raise_error
 	end
 
