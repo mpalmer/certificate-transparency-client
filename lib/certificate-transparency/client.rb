@@ -13,6 +13,10 @@ class CertificateTransparency::Client
 	#
 	class HTTPError < Error; end
 
+	# Indicates an error in parsing a response from the server.
+	#
+	class DataError < Error; end
+
 	# The public key of the log, as specified in the constructor.
 	#
 	# @return [OpenSSL::PKey]
@@ -88,6 +92,27 @@ class CertificateTransparency::Client
 		entries_json = make_request("get-entries", :start => first, :end => last)
 		JSON.parse(entries_json)["entries"].map do |entry|
 			CT::LogEntry.from_json(entry.to_json)
+		end
+	end
+
+	# Retrieve the full set of roots publicised as being supported by this log.
+	#
+	# @return [Array<OpenSSL::X509::Certificate>]
+	#
+	# @raise [CT::Client::HTTPError] if something went wrong with the HTTP request.
+	#
+	# @raise [CT::Client::DataError] if the data returned didn't meet our expectations.
+	#
+	def get_roots
+		json = make_request("get-roots")
+
+		begin
+			JSON.parse(json)["certificates"].map do |c|
+				OpenSSL::X509::Certificate.new(c.unpack("m").first)
+			end
+		rescue StandardError => ex
+			raise CT::Client::DataError,
+			      "Failed to parse get-roots response: #{ex.message} (#{ex.class})"
 		end
 	end
 
