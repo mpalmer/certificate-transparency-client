@@ -137,7 +137,7 @@ class CertificateTransparency::Client
 			      "Failed to #{op}: got HTTP #{resp.code}"
 		end
 
-		if resp["Content-Type"] != "application/json"
+		if resp["Content-Type"] !~ /^application\/json($|;)/
 			raise CT::Client::HTTPError,
 			      "Failed to #{op}: received incorrect Content-Type (#{resp["Content-Type"]})"
 		end

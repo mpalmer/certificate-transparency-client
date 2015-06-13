@@ -10,7 +10,7 @@ describe "CT::Client#get_entries" do
 		stub_request(:get, "https://example.org/ct/v1/get-entries").
 		  with(:query => { "start" => start, "end" => _end }).
 		  to_return(
-		    :headers => {"Content-Type" => "application/json"},
+		    :headers => {"Content-Type" => "application/json; charset=ISO-8859-1"},
 		    :body    => read_fixture_file("ok_entries")
 		  )
 
@@ -45,7 +45,7 @@ describe "CT::Client#get_entries" do
 		let(:sth_req) do
 			stub_request(:get, "https://example.org/ct/v1/get-sth").
 			  to_return(
-			    :headers => {"Content-Type" => "application/json"},
+			    :headers => {"Content-Type" => "application/json; charset=ISO-8859-1"},
 			    :body    => read_fixture_file("ok_sth")
 			  )
 		end

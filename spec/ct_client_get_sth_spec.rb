@@ -9,7 +9,7 @@ describe "CT::Client#get_sth" do
 	let(:result) do
 		stub_request(:get, "https://example.org/ct/v1/get-sth").
 		  to_return(
-		    :headers => {"Content-Type" => "application/json"},
+		    :headers => {"Content-Type" => "application/json; charset=ISO-8859-1"},
 		    :body    => read_fixture_file("ok_sth")
 		  )
 
