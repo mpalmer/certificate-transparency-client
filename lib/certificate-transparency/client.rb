@@ -19,7 +19,7 @@ class CertificateTransparency::Client
 
 	# The public key of the log, as specified in the constructor.
 	#
-	# @return [OpenSSL::PKey]
+	# @return [OpenSSL::PKey::PKey]
 	#
 	attr_reader :public_key
 
@@ -42,15 +42,23 @@ class CertificateTransparency::Client
 		end
 
 		if opts[:public_key]
-			begin
-				@public_key = if opts[:public_key].valid_encoding? && opts[:public_key] =~ /^[A-Za-z0-9+\/]+=*$/
-					OpenSSL::PKey::EC.new(opts[:public_key].unpack("m").first)
-				else
-					OpenSSL::PKey::EC.new(opts[:public_key])
+			pkdata = if opts[:public_key].valid_encoding? && opts[:public_key] =~ /^[A-Za-z0-9+\/]+=*$/
+				opts[:public_key].unpack("m").first
+			else
+				opts[:public_key]
+			end
+
+			@public_key = begin
+				OpenSSL::PKey::EC.new(pkdata)
+			rescue ArgumentError
+				begin
+					OpenSSL::PKey::RSA.new(pkdata)
+				rescue StandardError => ex
+					raise "Invalid public key: #{ex.message} (#{ex.class})"
 				end
-			rescue OpenSSL::PKey::ECError
+			rescue StandardError => ex
 				raise ArgumentError,
-				      "Invalid public key"
+				      "Invalid public key: #{ex.message} (#{ex.class})"
 			end
 		end
 

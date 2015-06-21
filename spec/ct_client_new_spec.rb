@@ -25,6 +25,20 @@ describe "CT::Client.new" do
 		end.to_not raise_error
 	end
 
+	it "takes a raw RSA public key" do
+		expect do
+			CT::Client.new "https://ct.example.com",
+			               :public_key => read_fixture_file("rsa_pk_raw")
+		end.to_not raise_error
+	end
+
+	it "takes a base64 RSA public key" do
+		expect do
+			CT::Client.new "https://ct.example.com",
+			               :public_key => read_fixture_file("rsa_pk_base64")
+		end.to_not raise_error
+	end
+
 	it "throws up on an invalid raw public key" do
 		expect do
 			CT::Client.new "https://ct.example.com",
