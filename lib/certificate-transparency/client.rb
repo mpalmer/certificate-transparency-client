@@ -170,7 +170,7 @@ class CertificateTransparency::Client
 		@proxy ||= begin
 			url = URI(ENV["http_proxy"].to_s)
 
-			Net::HTTP.Proxy(url.host, url.port)
+			Net::HTTP.Proxy(url.hostname, url.port)
 		end
 	end
 end
