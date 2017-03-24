@@ -1,4 +1,5 @@
 require 'certificate-transparency'
+require 'net/http'
 require 'openssl'
 require 'uri'
 
